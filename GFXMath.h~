@@ -583,15 +583,16 @@ static T distance(const VecN<T, length>& a, const VecN<T, length>& b){
 template <typename T>
 static T angleInRadians(const TVec2<T>& a, const TVec2<T>& b){
   T rv(0);
-   // fill me it!
+   rv = atan2(a[1],a[0])-atan2(b[1],b[0]);
   return rv;
 }
 
 template <typename T>
 static T angleInRadians(const TVec3<T>& a, const TVec3<T>& b){
-  T rv(0);
-  // Fill me in!
-  return rv;
+	T rv(0);
+	rv = dot(a,b);
+	rv = rv / (length(a)*length(b));
+	return acos(rv);
 }
 
 template <typename T>
@@ -609,10 +610,7 @@ static T angle(const TVec3<T>& a, const TVec3<T>& b){
 
 template <typename T>
 static VecN<T, 3> cross(const VecN<T, 3>& a, const VecN<T, 3>& b){
-	std::cout<<  a[1]*b[2]-b[1]*a[2]<<"---------------------------------------------------------------"<<std::endl;
-	std::cout<<-(a[0]*b[2]-b[0]*a[2])<<"---------------------------------------------------------------"<<std::endl;
-	std::cout<<  a[0]*b[1]-b[0]*a[1]<<"---------------------------------------------------------------"<<std::endl;
-  return TVec3<T>(0, 0, 0);
+  return TVec3<T>(a[1]*b[2]-b[1]*a[2], -(a[0]*b[2]-b[0]*a[2]), a[0]*b[1]-b[0]*a[1]);
 }
 
 template <typename T, int length>

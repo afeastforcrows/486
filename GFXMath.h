@@ -665,9 +665,14 @@ public:
   }
   
   MatNM operator +(const this_t& rhs) const{
-    this_t sum;
-    // Fill me in!
-    return sum;
+	this_t sum;
+	sum = *this;
+	for(int y = 0; y < h; y++){
+		for(int x = 0; x < w; x++){
+			sum[x] += rhs[x];
+		}
+	}
+	return sum;
   }
   
   this_t& operator +=(const this_t& rhs){
@@ -675,35 +680,72 @@ public:
   }
   
   this_t operator -( ) const{
-    this_t rv;
-    // Fill me in!
-    return rv;
+	this_t sum;
+	sum = *this;
+	for(int y = 0; y < h; y++){
+		for(int x = 0; x < w; x++){
+			sum[x]  = -sum[x];
+		}
+	}
+	return sum;
   }
   
   this_t operator -(const this_t& rhs) const{
-    this_t difference;
-    // Fill me in!
-    return difference;
+	this_t sum;
+	sum = *this;
+	for(int y = 0; y < h; y++){
+		for(int x = 0; x < w; x++){
+			sum[x] -= rhs[x];
+		}
+	}
+	return sum;
   }
   
   this_t& operator -=(const this_t& rhs){
     return (*this = *this - rhs);
   }
       
-  this_t operator *(const T& rhs) const{
-    this_t product;
-    // Fill me in!
-    return product;
+  this_t operator *(const T& rhs) const{ //scalar
+	this_t sum;
+	sum = *this;
+	std::cout<<"============================================================"<<std::endl;
+	std::cout<<sum[0][0]<<std::endl<<sum[0]<<std::endl;
+	std::cout<<rhs<<std::endl;//<<rhs[0]<<std::endl;
+	for(int y = 0; y < h; y++){
+		for(int x = 0; x < w; x++){
+			sum[x][y] *= rhs;
+		}
+	}
+	return sum;
   }
   
   this_t& operator *=(const T& rhs){
     return (*this = *this * rhs);
   }
-  
+	/*//////////////////////////////////////////////
+	// Cheat Sheet:
+	// lhs = *this
+	// h, w  
+	// [0] = element at (0,0)
+	// [0] = elements in col 0
+	//
+	// rhs
+	// .height(), .width()
+	//////////////////////////////////////////////*/
+
+
   this_t operator *(const this_t& rhs){
-    this_t product;
-    // Fill me in!
-    return product;
+	this_t sum;
+	sum = *this;
+	//std::cout<<"============================================================"<<std::endl;
+	std::cout<<sum[0][0]<<std::endl<<sum[0]<<std::endl;
+	std::cout<<rhs[0][0]<<std::endl<<rhs[0]<<std::endl;
+	for(int y = 0; y < h; y++){
+		for(int x = 0; x < w; x++){
+			sum[x][y] = sum[x][y] * rhs[x][y];
+		}
+	}
+	return sum;
   }
   
   
@@ -722,8 +764,23 @@ public:
   }
   
   bool operator ==(const this_t& rhs) const{
-    bool rv = false;
-    // Fill me in!
+	bool rv = false;
+	float precision = FP_SP_EPSILON;
+	if(h != rhs.height() || w != rhs.width()){
+		return rv;
+	}
+	for(int x = 0; x < h; x++){
+		for(int y = 0; y < w; y++){
+			std::cout<<*this[x][y]<<" and the other: "<<rhs[y][x]<<std::endl;
+			rv = fpEqual(*this[x][y], rhs[y][x], precision);
+			if(!rv){
+				std::cout<<"exit this now"<<std::endl;
+				return false;
+				goto END;
+			}
+		}
+	}
+	END:	
     return rv;
   }
   
@@ -780,8 +837,18 @@ public:
   }
     
   MatNM<T, h, w> transpose( ) const{
-    MatNM<T, h, w> rv;
-    // Fill me in!
+    MatNM<T, w, h> rv;
+	for(int x = 0; x < h; x++){
+		for(int y = 0; y < w; y++){
+			rv.cols[x][y]=*this[x][y];//rv[x][y] = *this[x][y];
+		}
+	}
+	//rv.cols[0][0] = 0.0;
+	std::cout<<"Here we are"<<std::endl;
+	for(int z = 0; z < w*h; z++){
+		//std::cout<<rv[z];
+	}
+	std::cout<<std::endl;
     return rv;
   }
     

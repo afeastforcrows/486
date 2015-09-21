@@ -12,7 +12,7 @@
 
 #include "transformations.h"
 
-#ifndef //__SOLUTION__
+#ifndef __SOLUTION__
 
 void rotateCameraLeft(float degrees, Vec3& eyePosition, Vec3& centerPosition, Vec3& upVector){
   // Please implement this function.
