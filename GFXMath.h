@@ -1133,7 +1133,15 @@ std::ostream& operator <<( std::ostream &out, const MatNM<T, w, h> &m ){
 template <typename T, const int w1, const int h1, const int w2, const int h2>
 MatNM<T, w1, h2> operator *(const MatNM<T, w1, h1>& lhs, const MatNM<T, w2, h2>& rhs){
   MatNM<T, w1, h2> product;
-  // Fill me in!
+	for(int i = 0; i < h1; i++)
+	{
+		vecN<T, w1> row = lhs.row(i);
+		for(int j = 0; j < w2; j++)
+		{
+			VecN<t, h2> col = rhs.col(j);
+			product(i,j) = dot(row, col);
+		}
+	}
   return product;
 }
 
@@ -1165,14 +1173,24 @@ protected:
 
 static Mat4 frustum(float left, float right, float bottom, float top, float near, float far){
   Mat4 m;
-  // Fill me in!  
+	assert(near >= 0.0);
+	assert(far >= 0.0);
+	float A = (right + left) / (right - left);
+	float B = (top + bottom) / (top - bottom);
+	float C = (far + near) / (far - near);
+	float D = (2 * far * near) / (far - near);
+	float E = (2 * near) / (right - left);
+	float F = (2 * near) / (top - bottom);
+	m = (	E, 	0.0,	0.0,	0.0,
+		0.0,	F,	0.0,	0.0,
+		A, 	B,	C,	-1.0,
+		0.0,	0.0,	D,	0.0);
   return m;
 }
 
 static Mat4 perspective(float fovy_in_Y_direction, float aspect, float near, float far){
-  Mat4 m;
-  // Fill me in!  
-  return m;
+	assert(near >= 0.0);
+	assert(far >= 0.0);
 }
 
 static Mat4 ortho(float left, float right, float bottom, float top, float near, float far){
